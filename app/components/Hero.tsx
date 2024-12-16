@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
@@ -10,35 +10,39 @@ import VideoPreview from "./VideoPreview";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = () => {
+const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const [loadedVideos, setLoadedVideos] = useState(0);
 
-  const totalVideos = 1;
-  const nextVdRef = useRef(null);
+  const totalVideos = 1; // Nombre total de vidéos
+  const nextVdRef = useRef<HTMLVideoElement | null>(null);
 
   const handleVideoLoad = () => {
     setLoadedVideos((prev) => prev + 1);
   };
 
+  // Appeler onLoaded une fois que toutes les vidéos sont chargées
   useEffect(() => {
-    if (loadedVideos === totalVideos - 1) {
+    if (loadedVideos >= totalVideos) {
       setLoading(false);
+      if (onLoaded) onLoaded();
     }
-  }, [loadedVideos]);
+  }, [loadedVideos, totalVideos, onLoaded]);
 
   const handleMiniVdClick = () => {
     setHasClicked(true);
-
     setCurrentIndex((prevIndex) => (prevIndex % totalVideos) + 1);
   };
+
+  const router = useRouter();
+
   const handleWatchTrailer = () => {
-    const router = useRouter();
     router.push('https://www.youtube.com/playlist?list=PLaRNoqxybhEsXNLfQJ9MIMWCV9ZcUWNaY');
   };
+  
+
   useGSAP(
     () => {
       if (hasClicked) {
@@ -50,7 +54,13 @@ const Hero = () => {
           height: "100%",
           duration: 1,
           ease: "power1.inOut",
-          onStart: () => nextVdRef.current.play(),
+          onStart: () => {
+            nextVdRef.current?.play().catch(() => {
+              // Optionnel : journaliser une erreur si nécessaire
+              console.error("Impossible de démarrer la vidéo.");
+            });
+          },
+          
         });
         gsap.from("#current-video", {
           transformOrigin: "center center",
@@ -84,13 +94,12 @@ const Hero = () => {
     });
   });
 
-  const getVideoSrc = (index) => `videos/hero-${index}.mp4`;
+  const getVideoSrc = (index: number) => `videos/hero-${index}.mp4`;
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
       {loading && (
         <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
-          {/* https://uiverse.io/G4b413l/tidy-walrus-92 */}
           <div className="three-body">
             <div className="three-body__dot"></div>
             <div className="three-body__dot"></div>
@@ -164,7 +173,7 @@ const Hero = () => {
               leftIcon={<TiLocationArrow />}
               containerClass="bg-blue-800 flex-center gap-1 text-black"
               onClick={handleWatchTrailer}
-          />
+            />
           </div>
         </div>
       </div>
