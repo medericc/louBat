@@ -4,7 +4,7 @@ import { useLoader } from "../context/LoaderContext";
 import gsap from "gsap";
 
 const Loader: React.FC = () => {
-  const { loading } = useLoader(); // Récupère l'état global du loader
+  const { loading } = useLoader(); // Récupération de l'état du loader
 
   useEffect(() => {
     if (loading) {
@@ -20,12 +20,14 @@ const Loader: React.FC = () => {
     }
   }, [loading]);
 
-  // Afficher le loader seulement si `loading` est vrai
+  // Afficher le loader seulement si `loading` est actif
   if (!loading) return null;
 
   return (
     <div className="loader-container fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
+      {/* Animation circulaire */}
       <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+      {/* Texte */}
       <p className="mt-4 text-lg font-semibold text-gray-600">
         Chargement en cours...
       </p>

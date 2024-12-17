@@ -1,3 +1,4 @@
+
 import "./globals.css";
 import { LoaderProvider } from "./context/LoaderContext"; // Importer le contexte
 import Loader from "./components/Loader"; // Importer le loader
@@ -16,8 +17,10 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <LoaderProvider>
-          <Loader /> {/* Le loader global */}
-          {children} {/* Le contenu de l'application */}
+          {/* Loader global */}
+          <Loader />
+          {/* Contenu principal */}
+          {children}
         </LoaderProvider>
       </body>
     </html>
