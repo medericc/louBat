@@ -143,7 +143,7 @@ const Hero = () => {
             </h1>
 
             <p className="mb-5 max-w-64 font-robert-regular text-blue-100">
-              Entre dans l'Univers de la <br /> Meneuse Belge
+              Entre dans l&apos;Univers de la <br /> Meneuse Belge
             </p>
 
             <Button
