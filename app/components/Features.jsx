@@ -38,7 +38,7 @@ export const BentoTilt = ({ children, className = "" }) => {
   );
 };
 
-export const BentoCard = ({ src, title, description, isComingSoon, onLoaded }) => {
+export const BentoCard = ({ src, title, description, isComingSoon }) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [hoverOpacity, setHoverOpacity] = useState(0);
   const hoverButtonRef = useRef(null);
@@ -63,7 +63,6 @@ export const BentoCard = ({ src, title, description, isComingSoon, onLoaded }) =
         loop
         muted
         autoPlay
-        onLoadedData={onLoaded}
         className="absolute left-0 top-0 size-full object-cover object-center"
       />
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-1000">
@@ -102,7 +101,7 @@ export const BentoCard = ({ src, title, description, isComingSoon, onLoaded }) =
   );
 };
 
-const Features = ({ onLoaded }) => {
+const Features = () => {
   const [loading, setLoading] = useState(true);
   const [loadedVideos, setLoadedVideos] = useState(0);
   const totalVideos = 5; // Mettez à jour ce nombre si nécessaire.
@@ -114,11 +113,8 @@ const Features = ({ onLoaded }) => {
   useEffect(() => {
     if (loadedVideos === totalVideos) {
       setLoading(false);
-      if (onLoaded) {
-        onLoaded(); // Appelle la fonction onLoaded passée en prop
-      }
     }
-  }, [loadedVideos, totalVideos, onLoaded]);
+  }, [loadedVideos, totalVideos]);
 
   return (
     <section className="bg-black pb-52" id="actions">
@@ -150,7 +146,6 @@ const Features = ({ onLoaded }) => {
             }
             description="Lou envoie le ballon à une coéquipière pour éviter la pression défensive et lui donner un tir ouvert."
             isComingSoon
-            onLoaded={handleVideoLoad}
           />
         </BentoTilt>
 
@@ -165,7 +160,6 @@ const Features = ({ onLoaded }) => {
               }
               description="Lou effectue un pas latéral pour se créer de l'espace et prendre un tir plus propre."
               isComingSoon
-              onLoaded={handleVideoLoad}
             />
           </BentoTilt>
 
@@ -179,7 +173,6 @@ const Features = ({ onLoaded }) => {
               }
               description="Lou feinte un tir, puis fais un grand pas pour finir par un tir."
               isComingSoon
-              onLoaded={handleVideoLoad}
             />
           </BentoTilt>
 
@@ -193,7 +186,6 @@ const Features = ({ onLoaded }) => {
               }
               description="Lou simule un arrêt pour faire croire qu'elle va tirer ou passer, puis passe son défenseur."
               isComingSoon
-              onLoaded={handleVideoLoad}
             />
           </BentoTilt>
 
@@ -212,7 +204,6 @@ const Features = ({ onLoaded }) => {
               loop
               muted
               autoPlay
-              onLoadedData={handleVideoLoad}
               className="size-full object-cover object-center"
             />
           </BentoTilt>

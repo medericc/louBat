@@ -9,16 +9,13 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 export default function HomePage() {
-  const handleContentLoaded = () => {
-    console.log("Content loaded!"); // Si vous voulez suivre les événements de chargement
-  };
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
       <NavBar />
-      <Hero onLoaded={handleContentLoaded} />
+      <Hero  />
       <About />
-      <Features onLoaded={handleContentLoaded} />
+      <Features />
       <Story />
       <Contact />
       <Footer />

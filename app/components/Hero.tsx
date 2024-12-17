@@ -4,44 +4,38 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import { TiLocationArrow } from "react-icons/ti";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Button from "./Button";
 import VideoPreview from "./VideoPreview";
+import { useLoader } from "../context/LoaderContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
+const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [loadedVideos, setLoadedVideos] = useState(0);
+  const { setLoading } = useLoader(); // Utiliser le contexte pour gérer le chargement global
 
   const totalVideos = 1; // Nombre total de vidéos
   const nextVdRef = useRef<HTMLVideoElement | null>(null);
 
-  const handleVideoLoad = () => {
-    setLoadedVideos((prev) => prev + 1);
+  const router = useRouter();
+
+  const handleWatchTrailer = () => {
+    router.push(
+      "https://www.youtube.com/playlist?list=PLaRNoqxybhEsXNLfQJ9MIMWCV9ZcUWNaY"
+    );
   };
 
-  // Appeler onLoaded une fois que toutes les vidéos sont chargées
+  // Une fois que le composant est monté, désactiver le loader global
   useEffect(() => {
-    if (loadedVideos >= totalVideos) {
-      setLoading(false);
-      if (onLoaded) onLoaded();
-    }
-  }, [loadedVideos, totalVideos, onLoaded]);
+    setLoading(false); // Déclencher l'arrêt du loader quand tout est prêt
+  }, [setLoading]);
 
   const handleMiniVdClick = () => {
     setHasClicked(true);
     setCurrentIndex((prevIndex) => (prevIndex % totalVideos) + 1);
   };
-
-  const router = useRouter();
-
-  const handleWatchTrailer = () => {
-    router.push('https://www.youtube.com/playlist?list=PLaRNoqxybhEsXNLfQJ9MIMWCV9ZcUWNaY');
-  };
-  
 
   useGSAP(
     () => {
@@ -56,11 +50,9 @@ const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
           ease: "power1.inOut",
           onStart: () => {
             nextVdRef.current?.play().catch(() => {
-              // Optionnel : journaliser une erreur si nécessaire
               console.error("Impossible de démarrer la vidéo.");
             });
           },
-          
         });
         gsap.from("#current-video", {
           transformOrigin: "center center",
@@ -98,16 +90,6 @@ const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
-      {loading && (
-        <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
-          <div className="three-body">
-            <div className="three-body__dot"></div>
-            <div className="three-body__dot"></div>
-            <div className="three-body__dot"></div>
-          </div>
-        </div>
-      )}
-
       <div
         id="video-frame"
         className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75"
@@ -126,7 +108,6 @@ const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
                   muted
                   id="current-video"
                   className="size-64 origin-center scale-150 object-cover object-center"
-                  onLoadedData={handleVideoLoad}
                 />
               </div>
             </VideoPreview>
@@ -139,7 +120,6 @@ const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
             muted
             id="next-video"
             className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
-            onLoadedData={handleVideoLoad}
           />
           <video
             src={getVideoSrc(
@@ -149,7 +129,6 @@ const Hero = ({ onLoaded }: { onLoaded: () => void }) => {
             loop
             muted
             className="absolute left-0 top-0 size-full object-cover object-center"
-            onLoadedData={handleVideoLoad}
           />
         </div>
 
