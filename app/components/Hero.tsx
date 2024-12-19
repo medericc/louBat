@@ -51,7 +51,7 @@ const Hero = () => {
       <div className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75">
         <video
           ref={videoRef}
-          src="videos/hero-1.mp4" // Remplace par le chemin de votre vidéo
+          src="videos/hero-1.webm" // Remplace par le chemin de votre vidéo
           autoPlay
           loop
           muted

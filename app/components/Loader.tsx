@@ -25,8 +25,29 @@ const Loader: React.FC = () => {
 
   return (
     <div className="loader-container fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
-      {/* Animation circulaire */}
-      <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+      {/* SVG du chat avec animation */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 64 64"
+        width="64"
+        height="64"
+        className="animate-bounce"
+      >
+        {/* Chat SVG - un visage de chat simple */}
+        <circle cx="32" cy="32" r="28" fill="#ffcc00" />
+        <circle cx="24" cy="24" r="4" fill="#000" />
+        <circle cx="40" cy="24" r="4" fill="#000" />
+        <path
+          d="M22,40 Q32,50 42,40"
+          stroke="#000"
+          strokeWidth="2"
+          fill="transparent"
+        />
+        <path
+          d="M32,32 Q35,35 40,35 Q45,32 42,30 Q38,28 32,32"
+          fill="#fff"
+        />
+      </svg>
       {/* Texte */}
       <p className="mt-4 text-lg font-semibold text-gray-600">
         Chargement en cours...
