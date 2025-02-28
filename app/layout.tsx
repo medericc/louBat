@@ -5,7 +5,7 @@ import Loader from "./components/Loader"; // Importer le loader
 
 export const metadata = {
   title: "Louann Battiston",
-  description: "Louann Battiston meneuse de Duke",
+  description: "Louann Battiston, meneuse de Duke",
 };
 
 export default function RootLayout({
